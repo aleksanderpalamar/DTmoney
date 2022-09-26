@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContextSelector } from "use-context-selector";
 import { Header } from "../../components/Header";
 import { Summary } from "../../components/Summary";
 import { TransactionsContext } from "../../context/TransactionsContext";
@@ -10,7 +10,9 @@ import {
 } from "./styles";
 
 export function Transactions() {
-  const { transactions } = useContext(TransactionsContext);
+  const transactions = useContextSelector(TransactionsContext, (context) => {
+    return context.transactions;
+  });
   return (
     <div>
       <Header />
@@ -19,7 +21,7 @@ export function Transactions() {
         <SearchForm />
         <TransactionsTable>
           <tbody>
-            {transactions.map(transation => {
+            {transactions.map((transation) => {
               return (
                 <tr key={transation.id}>
                   <td width="50%">{transation.description}</td>
@@ -36,9 +38,7 @@ export function Transactions() {
                     </PriceHighlight>
                   </td>
                   <td>{transation.category}</td>
-                  <td>
-                    {new Intl.DateTimeFormat("pt-BR").format()}
-                  </td>
+                  <td>{new Intl.DateTimeFormat("pt-BR").format()}</td>
                 </tr>
               );
             })}
